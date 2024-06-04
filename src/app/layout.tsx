@@ -2,6 +2,21 @@ import "~/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 
+import { DM_Serif_Display } from "next/font/google";
+import { Inter } from "next/font/google";
+
+const dm_serif_display = DM_Serif_Display({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-dm_serif_display",
+});
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
 import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata = {
@@ -16,7 +31,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html
+      lang="en"
+      className={dm_serif_display.variable + " " + inter.variable}
+    >
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
