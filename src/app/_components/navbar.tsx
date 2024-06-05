@@ -7,15 +7,21 @@ export function Navbar() {
       <h1 className="text-4xl text-primary">
         <Link href="/">JFJ</Link>
       </h1>
-      <ul className="flex flex-auto items-center justify-center gap-8">
+      <ul className="flex flex-auto items-center justify-center gap-8 text-foreground/50 ">
         <li>
-          <Link href="/about">About</Link>
+          <Link href="/about" className="hover:text-foreground/80">
+            About
+          </Link>
         </li>
         <li>
-          <Link href="/contact">Contact</Link>
+          <Link href="/contact" className="hover:text-foreground/80">
+            Contact
+          </Link>
         </li>
         <li>
-          <Link href="/rooms">Available Rooms</Link>
+          <Link href="/rooms" className="hover:text-foreground/80">
+            Available Rooms
+          </Link>
         </li>
       </ul>
     </nav>
