@@ -29,7 +29,7 @@ export function Navbar() {
       <div className="flex gap-4 pe-5">
         <Link
           href="/login"
-          className="m-auto px-3 py-2 outline outline-1 transition-all hover:text-primary-foreground hover:outline-primary-foreground"
+          className="m-auto px-3 py-2 opacity-60 outline outline-1 transition-all hover:opacity-100"
         >
           Login
         </Link>
