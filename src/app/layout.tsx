@@ -18,6 +18,7 @@ const inter = Inter({
 });
 
 import { TRPCReactProvider } from "~/trpc/react";
+import { cn } from "~/lib/utils";
 
 export const metadata = {
   title: "Create T3 App",
@@ -33,7 +34,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={dm_serif_display.variable + " " + inter.variable}
+      className={cn(
+        "bg-background min-h-screen font-sans antialiased",
+        dm_serif_display.variable,
+        inter.variable,
+      )}
     >
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
