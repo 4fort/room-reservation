@@ -7,177 +7,151 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model amenities {
-  id             BigInt           @id @default(autoincrement()) @db.UnsignedBigInt
-  amenity_name   String           @db.VarChar(255)
-  description    String           @db.Text
-  room_amenities room_amenities[]
+model Amenity {
+  id             BigInt        @id @default(autoincrement()) @db.UnsignedBigInt
+  amenity_name   String        @db.VarChar(255)
+  description    String        @db.Text
+  room_amenities RoomAmenity[]
+
+  @@map("amenities")
 }
 
-model failed_jobs {
-  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
-  uuid       String   @unique(map: "failed_jobs_uuid_unique") @db.VarChar(255)
-  connection String   @db.Text
-  queue      String   @db.Text
-  payload    String   @db.LongText
-  exception  String   @db.LongText
-  failed_at  DateTime @default(now()) @db.Timestamp(0)
+model Location {
+  id            BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  location_name String @db.VarChar(255)
+  address       String @db.VarChar(255)
+  city          String @db.VarChar(255)
+  state         String @db.VarChar(255)
+  country       String @db.VarChar(255)
+  rooms         Room[]
+
+  @@map("locations")
 }
 
-model locations {
-  id            BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
-  location_name String         @db.VarChar(255)
-  address       String         @db.VarChar(255)
-  city          String         @db.VarChar(255)
-  state         String         @db.VarChar(255)
-  country       String         @db.VarChar(255)
-  reservations  reservations[]
-  rooms         rooms[]
-}
-
-model migrations {
-  id        Int    @id @default(autoincrement()) @db.UnsignedInt
-  migration String @db.VarChar(255)
-  batch     Int
-}
-
-model password_reset_tokens {
-  email      String    @id @db.VarChar(255)
-  token      String    @db.VarChar(255)
-  created_at DateTime? @db.Timestamp(0)
-}
-
-model payment {
-  id                BigInt          @id @default(autoincrement()) @db.UnsignedBigInt
-  reservation_id    BigInt          @db.UnsignedBigInt
-  payment_method_id BigInt          @db.UnsignedBigInt
-  amount            Decimal         @db.Decimal(10, 2)
-  payment_datetime  DateTime        @db.DateTime(0)
-  payment_methods   payment_methods @relation(fields: [payment_method_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "payment_payment_method_id_foreign")
-  reservations      reservations    @relation(fields: [reservation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "payment_reservation_id_foreign")
+model Payment {
+  id                BigInt        @id @default(autoincrement()) @db.UnsignedBigInt
+  reservation_id    BigInt        @unique @db.UnsignedBigInt
+  payment_method_id BigInt        @db.UnsignedBigInt
+  amount            Decimal       @db.Decimal(10, 2)
+  payment_datetime  DateTime      @db.DateTime(0)
+  payment_methods   PaymentMethod @relation(fields: [payment_method_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "payment_payment_method_id_foreign")
+  reservations      Reservation   @relation(fields: [reservation_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "payment_reservation_id_foreign")
 
   @@index([payment_method_id], map: "payment_payment_method_id_index")
   @@index([reservation_id], map: "payment_reservation_id_index")
+  @@map("payments")
 }
 
-model payment_methods {
+model PaymentMethod {
   id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
   method_name String    @db.VarChar(255)
-  payment     payment[]
+  payment     Payment[]
+
+  @@map("payment_methods")
 }
 
-model personal_access_tokens {
-  id             BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
-  tokenable_type String    @db.VarChar(255)
-  tokenable_id   BigInt    @db.UnsignedBigInt
-  name           String    @db.VarChar(255)
-  token          String    @unique(map: "personal_access_tokens_token_unique") @db.VarChar(64)
-  abilities      String?   @db.Text
-  last_used_at   DateTime? @db.Timestamp(0)
-  expires_at     DateTime? @db.Timestamp(0)
-  created_at     DateTime? @db.Timestamp(0)
-  updated_at     DateTime? @db.Timestamp(0)
+model Reservation {
+  id                BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id           BigInt   @db.UnsignedBigInt
+  start_datetime    DateTime @db.DateTime(0)
+  end_datetime      DateTime @db.DateTime(0)
+  reservation_notes String   @db.VarChar(255)
+  room_id           BigInt   @db.UnsignedBigInt
+  payment           Payment?
+  rooms             Room     @relation(fields: [room_id], references: [id], onDelete: Cascade, map: "reservations_rooms_id_fk")
+  users             User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "reservations_user_id_foreign")
+  reviews           Review[]
 
-  @@index([tokenable_type, tokenable_id], map: "personal_access_tokens_tokenable_type_tokenable_id_index")
-}
-
-model reservations {
-  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
-  user_id           BigInt    @db.UnsignedBigInt
-  location_id       BigInt    @db.UnsignedBigInt
-  start_datetime    DateTime  @db.DateTime(0)
-  end_datetime      DateTime  @db.DateTime(0)
-  reservation_notes String    @db.VarChar(255)
-  room_id           BigInt    @db.UnsignedBigInt
-  payment           payment[]
-  locations         locations @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reservations_location_id_foreign")
-  rooms             rooms     @relation(fields: [room_id], references: [id], onDelete: Cascade, map: "reservations_rooms_id_fk")
-  users             users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reservations_user_id_foreign")
-  reviews           reviews[]
-
-  @@index([location_id], map: "reservations_location_id_index")
   @@index([room_id], map: "reservations_rooms_id_fk")
   @@index([user_id], map: "reservations_user_id_index")
+  @@map("reservations")
 }
 
-model reviews {
-  id              BigInt       @id @default(autoincrement()) @db.UnsignedBigInt
-  reservation_id  BigInt       @db.UnsignedBigInt
-  rating          Int          @db.SmallInt
-  review_text     String       @db.Text
-  review_datetime DateTime     @db.DateTime(0)
-  reservations    reservations @relation(fields: [reservation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "reviews_reservation_id_foreign")
+model Review {
+  id              BigInt      @id @default(autoincrement()) @db.UnsignedBigInt
+  reservation_id  BigInt      @db.UnsignedBigInt
+  rating          Int         @db.SmallInt
+  review_text     String      @db.Text
+  review_datetime DateTime    @db.DateTime(0)
+  reservations    Reservation @relation(fields: [reservation_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "reviews_reservation_id_foreign")
 
   @@index([reservation_id], map: "reviews_reservation_id_index")
+  @@map("reviews")
 }
 
-model room_amenities {
-  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
-  room_id    BigInt    @db.UnsignedBigInt
-  amenity_id BigInt    @db.UnsignedBigInt
-  amenities  amenities @relation(fields: [amenity_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_amenities_amenity_id_foreign")
-  rooms      rooms     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_amenities_room_id_foreign")
+model RoomAmenity {
+  id         BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  room_id    BigInt  @db.UnsignedBigInt
+  amenity_id BigInt  @db.UnsignedBigInt
+  amenities  Amenity @relation(fields: [amenity_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_amenities_amenity_id_foreign")
+  rooms      Room    @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_amenities_room_id_foreign")
 
   @@index([amenity_id], map: "room_amenities_amenity_id_index")
   @@index([room_id], map: "room_amenities_room_id_index")
+  @@map("room_amenities")
 }
 
-model room_availability {
-  id              BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
-  room_id         BigInt   @db.UnsignedBigInt
-  date            DateTime @db.Date
+model RoomAvailability {
+  id              BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  room_id         BigInt @unique @db.UnsignedBigInt
   available_count Int
-  rooms           rooms    @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_availabity_room_id_foreign")
+  rooms           Room   @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_availabity_room_id_foreign")
 
   @@index([room_id], map: "room_availabity_room_id_index")
+  @@map("room_availability")
 }
 
-model room_prices {
-  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
-  room_id    BigInt   @db.UnsignedBigInt
-  start_date DateTime @db.Date
-  end_date   DateTime @db.Date
-  price      Decimal  @db.Decimal(10, 2)
-  rooms      rooms    @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "room_prices_room_id_foreign")
+model RoomType {
+  id          BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  type_name   String @db.VarChar(255)
+  description String @db.Text
+  rooms       Room[]
 
-  @@index([room_id], map: "room_prices_room_id_index")
+  @@map("room_types")
 }
 
-model room_types {
-  id          BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
-  type_name   String  @db.VarChar(255)
-  description String  @db.Text
-  rooms       rooms[]
+model RoomImage {
+  id        BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  room_id   BigInt @db.UnsignedBigInt
+  image_url String @db.VarChar(255)
+  rooms     Room   @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_images_room_id_foreign")
+
+  @@map("room_images")
 }
 
-model rooms {
-  id                BigInt              @id @default(autoincrement()) @db.UnsignedBigInt
-  location_id       BigInt              @db.UnsignedBigInt
-  room_type_id      BigInt              @db.UnsignedBigInt
-  room_number       BigInt              @db.UnsignedBigInt
-  capacity          Int                 @db.UnsignedInt
-  reservations      reservations[]
-  room_amenities    room_amenities[]
-  room_availability room_availability[]
-  room_prices       room_prices[]
-  locations         locations           @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "rooms_location_id_foreign")
-  room_types        room_types          @relation(fields: [room_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "rooms_room_type_id_foreign")
+model Room {
+  id                BigInt            @id @default(autoincrement()) @db.UnsignedBigInt
+  location_id       BigInt            @db.UnsignedBigInt
+  room_type_id      BigInt            @db.UnsignedBigInt
+  room_number       BigInt            @db.UnsignedBigInt
+  capacity          Int               @db.UnsignedInt
+  price_per_night   Decimal?          @db.Decimal(10, 2)
+  images            RoomImage[]
+  reservations      Reservation[]
+  room_amenities    RoomAmenity[]
+  room_availability RoomAvailability?
+  locations         Location          @relation(fields: [location_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "rooms_location_id_foreign")
+  room_types        RoomType          @relation(fields: [room_type_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "rooms_room_type_id_foreign")
 
   @@index([location_id], map: "rooms_location_id_index")
   @@index([room_type_id], map: "rooms_room_type_id_index")
+  @@map("rooms")
 }
 
-model users {
-  id                BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
-  email             String         @unique(map: "users_email_unique") @db.VarChar(255)
-  email_verified_at DateTime?      @db.Timestamp(0)
-  password          String         @db.VarChar(255)
-  remember_token    String?        @db.VarChar(100)
-  created_at        DateTime?      @db.Timestamp(0)
-  updated_at        DateTime?      @db.Timestamp(0)
-  first_name        String         @db.VarChar(255)
-  middle_name       String?        @db.VarChar(255)
-  last_name         String         @db.VarChar(255)
-  username          String         @db.VarChar(255)
-  reservations      reservations[]
+model User {
+  id                BigInt        @id @default(autoincrement()) @db.UnsignedBigInt
+  email             String        @unique(map: "users_email_unique") @db.VarChar(255)
+  email_verified_at DateTime?     @db.Timestamp(0)
+  password          String        @db.VarChar(255)
+  remember_token    String?       @db.VarChar(100)
+  created_at        DateTime?     @db.Timestamp(0)
+  updated_at        DateTime?     @db.Timestamp(0)
+  first_name        String        @db.VarChar(255)
+  middle_name       String?       @db.VarChar(255)
+  last_name         String        @db.VarChar(255)
+  username          String        @db.VarChar(255)
+  reservations      Reservation[]
+
+  @@index([email], map: "users_email_index")
+  @@map("users")
 }

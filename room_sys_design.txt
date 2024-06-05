@@ -1,0 +1,28 @@
+CONSTATNTS
+  - AMENITIES
+    1. Swimming Pool access
+    2. Free WiFi
+    3. Gym Access
+    4. Television
+    5. Parking
+  - ROOM_TYPES
+    1. Standard Room
+    2. Suite
+  - LOCATIONS
+    # Rooms chooses predefined locations
+  - ROOMS
+  - PAYMENT_METHODS
+
+DYNAMICS
+  - ROOM_AVAILABILITY
+    # Changes $available_count column
+  - RESERVATIONS
+    $start_date
+    $end_date
+  - REVIEWS
+    # User review inputs of RESERVATIONS
+  - PAYMENTS
+    # Chooses from PAYMENT_METHODS
+    # $amount is ($ROOM.price_per_night * the days room is appointed)
+
+  

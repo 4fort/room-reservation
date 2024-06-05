@@ -1,13 +1,45 @@
 import { Button } from "~/components/ui/button";
 import React from "react";
 
-import { Bath, Coffee, Sofa, Tv, Wifi } from "lucide-react";
+import {
+  Coffee,
+  Dumbbell,
+  MapPin,
+  ParkingCircle,
+  Tv2,
+  Waves,
+  Wifi,
+} from "lucide-react";
 import { api } from "~/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 
+const AmenityIcons = [
+  {
+    id: 1,
+    icon: <Waves className="mr-2 h-5 w-5 text-gray-400" />,
+  },
+  {
+    id: 2,
+    icon: <Wifi className="mr-2 h-5 w-5 text-gray-400" />,
+  },
+  {
+    id: 3,
+    icon: <Dumbbell className="mr-2 h-5 w-5 text-gray-400" />,
+  },
+  {
+    id: 4,
+    icon: <ParkingCircle className="mr-2 h-5 w-5 text-gray-400" />,
+  },
+  {
+    id: 5,
+    icon: <Tv2 className="mr-2 h-5 w-5 text-gray-400" />,
+  },
+];
+
 export default async function AvailableRooms() {
   const rooms = await api.rooms.getAll({ limit: 3 });
+
   return (
     <React.Fragment>
       <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -17,7 +49,7 @@ export default async function AvailableRooms() {
             className="overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800"
           >
             <Image
-              src="/placeholder.svg"
+              src={room.Images[0] ? room.Images[0] : "/placeholder.svg"}
               alt="Room 1"
               width={400}
               height={300}
@@ -31,9 +63,10 @@ export default async function AvailableRooms() {
                 Sleeps {room.RoomCapacity} | {room.RoomType} | {room.Location}
               </p>
               <div className="mt-4 flex items-center">
-                <Wifi className="mr-2 h-5 w-5 text-gray-400" />
-                <Tv className="mr-2 h-5 w-5 text-gray-400" />
-                <Coffee className="mr-2 h-5 w-5 text-gray-400" />
+                {room.AmenityID.map(
+                  (id) =>
+                    AmenityIcons.find((icon) => icon.id === Number(id))?.icon,
+                )}
               </div>
               <div className="mt-4 flex items-center justify-between">
                 <p className="text-2xl font-bold">
