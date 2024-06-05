@@ -1,6 +1,6 @@
 import "~/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
+import { Navbar } from "~/app/_components/navbar";
 
 import { DM_Serif_Display } from "next/font/google";
 import { Inter } from "next/font/google";
@@ -35,12 +35,13 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        "bg-background min-h-screen font-sans antialiased",
+        "min-h-screen bg-background font-sans antialiased",
         dm_serif_display.variable,
         inter.variable,
       )}
     >
       <body>
+        <Navbar />
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>

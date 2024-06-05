@@ -11,110 +11,31 @@ import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import React from "react";
 
-import {
-  Bath,
-  Calendar,
-  Coffee,
-  DollarSign,
-  Locate,
-  Search,
-  Sofa,
-  Tv,
-  Wifi,
-} from "lucide-react";
 import AvailableRooms from "./_components/available-rooms";
+import Image from "next/image";
 
 export default function Component() {
   return (
     <React.Fragment>
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
-        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
+      <div className="flex h-[70vh] w-full grid-cols-1 flex-col gap-8 lg:grid-cols-2 lg:flex-row ">
+        <div className="mx-auto grid items-center py-12 ps-4 sm:py-16 sm:ps-6 lg:py-20 lg:ps-8">
           <div>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
               Find your perfect stay
             </h1>
-            <p className="mt-4 text-lg text-gray-500 dark:text-gray-400">
+            <h6 className="mt-4 text-lg text-gray-500 dark:text-gray-400">
               Search, book, and enjoy your next adventure.
-            </p>
-            <form className="mt-8 flex items-center space-x-4">
-              <div className="flex-1">
-                <label
-                  htmlFor="location"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Location
-                </label>
-                <div className="relative mt-1 rounded-md shadow-sm">
-                  <input
-                    type="text"
-                    name="location"
-                    id="location"
-                    className="block w-full rounded-md border-gray-300 pr-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 sm:text-sm"
-                    placeholder="Enter a city or region"
-                  />
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                    <Locate className="h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-              </div>
-              <div className="flex-1">
-                <label
-                  htmlFor="date"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Date
-                </label>
-                <div className="relative mt-1 rounded-md shadow-sm">
-                  <input
-                    type="text"
-                    name="date"
-                    id="date"
-                    className="block w-full rounded-md border-gray-300 pr-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 sm:text-sm"
-                    placeholder="Check-in - Check-out"
-                  />
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                    <Calendar className="h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-              </div>
-              <div className="flex-1">
-                <label
-                  htmlFor="price"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Price
-                </label>
-                <div className="relative mt-1 rounded-md shadow-sm">
-                  <input
-                    type="text"
-                    name="price"
-                    id="price"
-                    className="block w-full rounded-md border-gray-300 pr-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 sm:text-sm"
-                    placeholder="Price range"
-                  />
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                    <DollarSign className="h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-              </div>
-              <button
-                type="submit"
-                className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:bg-indigo-500 dark:hover:bg-indigo-600"
-              >
-                <Search className="mr-2 h-5 w-5" />
-                Search
-              </button>
-            </form>
+            </h6>
           </div>
-          <div>
-            <img
-              src="/placeholder.svg"
-              alt="Room reservation"
-              width={600}
-              height={400}
-              className="rounded-lg shadow-lg"
-            />
-          </div>
+        </div>
+        <div className="h-full w-full lg:w-1/2">
+          <Image
+            src="/Organic-modern-bedroom-House-and-Hold.jpg"
+            alt="Placeholder"
+            width={1100}
+            height={1000}
+            className="h-full w-full object-cover"
+          />
         </div>
       </div>
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
