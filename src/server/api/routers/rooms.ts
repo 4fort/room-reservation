@@ -41,4 +41,19 @@ export const roomsRouter = createTRPCRouter({
     const amenities = await ctx.db.amenity.findMany();
     return amenities;
   }),
+  getAvailableRoomCount: publicProcedure.query(async ({ ctx }) => {
+    const rooms = await ctx.db.room.findMany({
+      include: {
+        room_availability: true,
+      },
+      where: {
+        room_availability: {
+          available_count: {
+            gte: 1,
+          },
+        },
+      },
+    });
+    return rooms.length;
+  }),
 });

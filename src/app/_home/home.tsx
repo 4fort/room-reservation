@@ -13,11 +13,15 @@ import React from "react";
 
 import AvailableRooms from "./_components/available-rooms";
 import Image from "next/image";
+import { api } from "~/trpc/server";
+import Link from "next/link";
 
 export default function Component() {
+  const availableRoomCount = api.rooms.getAvailableRoomCount();
+
   return (
     <React.Fragment>
-      <div className="flex h-[70vh] w-full grid-cols-1 flex-col gap-8 lg:grid-cols-2 lg:flex-row ">
+      <div className="flex h-[70vh] w-full grid-cols-1 flex-col gap-8 border-b lg:grid-cols-2 lg:flex-row">
         <div className="mx-auto grid items-center py-12 ps-4 sm:py-16 sm:ps-6 lg:py-20 lg:ps-8">
           <div>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
@@ -28,7 +32,7 @@ export default function Component() {
             </h6>
           </div>
         </div>
-        <div className="h-full w-full lg:w-1/2">
+        <div className="relative h-full w-full lg:w-1/2">
           <Image
             src="/Organic-modern-bedroom-House-and-Hold.jpg"
             alt="Placeholder"
@@ -36,6 +40,20 @@ export default function Component() {
             height={1000}
             className="h-full w-full object-cover"
           />
+          <div className="absolute -left-32 bottom-12 hidden md:grid">
+            <div className="mx-auto flex divide-x bg-primary-foreground px-8 py-6 shadow-lg">
+              <p className="pe-8">Current available rooms</p>
+              <p className="px-8">{availableRoomCount}</p>
+              <div className="ps-8">
+                <Link
+                  href="/rooms"
+                  className="bg-primary p-3 text-primary-foreground hover:bg-primary/90"
+                >
+                  Book a room
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
