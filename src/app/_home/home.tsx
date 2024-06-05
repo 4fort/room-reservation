@@ -22,9 +22,9 @@ export default function Component() {
   return (
     <React.Fragment>
       <div className="flex h-[70vh] w-full grid-cols-1 flex-col gap-8 border-b lg:grid-cols-2 lg:flex-row">
-        <div className="mx-auto grid items-center py-12 ps-4 sm:py-16 sm:ps-6 lg:py-20 lg:ps-8">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+        <div className="grid w-full items-center py-12 ps-4 sm:py-16 sm:ps-6 lg:w-1/2 lg:py-20 lg:ps-8 ">
+          <div className="mx-auto ">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-8xl">
               Find your perfect stay
             </h1>
             <h6 className="mt-4 text-lg text-gray-500 dark:text-gray-400">
@@ -41,7 +41,7 @@ export default function Component() {
             className="h-full w-full object-cover"
           />
           <div className="absolute -left-32 bottom-12 hidden md:grid">
-            <div className="mx-auto flex divide-x bg-primary-foreground px-8 py-6 shadow-lg">
+            <div className="mx-auto flex divide-x bg-primary-foreground p-6 shadow-lg">
               <p className="pe-8">Current available rooms</p>
               <p className="px-8">{availableRoomCount}</p>
               <div className="ps-8">
