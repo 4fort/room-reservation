@@ -41,10 +41,10 @@ export default async function AvailableRooms() {
             className="overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800"
           >
             <Image
-              src={room.Images[0] ? room.Images[0] : "/placeholder.svg"}
-              alt="Room 1"
-              width={400}
-              height={300}
+              src={`/${room.ID}/${room.Images[0]}`}
+              alt="Room thumbnail"
+              width={800}
+              height={900}
               className="h-56 w-full object-cover"
             />
             <div className="p-6">

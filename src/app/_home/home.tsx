@@ -23,7 +23,7 @@ export default function Component() {
     <React.Fragment>
       <div className="flex h-[70vh] w-full grid-cols-1 flex-col border-b lg:grid-cols-2 lg:flex-row">
         <div className="grid w-full items-center p-4 py-12 sm:p-6 sm:py-16 lg:w-1/2 lg:p-8 lg:py-20 ">
-          <div className="mx-auto ">
+          <div className="mx-auto flex flex-col gap-8">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-8xl">
               Find your perfect stay
             </h1>
