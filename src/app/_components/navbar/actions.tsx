@@ -13,8 +13,11 @@ import {
 import { Button } from "~/components/ui/button";
 import Image from "next/image";
 import { LogoutButton } from "./logout-button";
+import { useRouter } from "next/navigation";
 
 export function Actions() {
+  const router = useRouter();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -35,7 +38,9 @@ export function Actions() {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Reservations</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push("/reservations")}>
+          Reservations
+        </DropdownMenuItem>
         <DropdownMenuItem>Profile</DropdownMenuItem>
         <DropdownMenuSeparator />
         <LogoutButton />

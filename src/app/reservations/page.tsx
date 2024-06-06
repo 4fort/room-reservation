@@ -20,7 +20,7 @@ export default async function Reservations() {
       <h1 className="text-4xl">Reservations</h1>
       <div>
         <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
+          <TableCaption>A list of your recent reservations.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">ID</TableHead>

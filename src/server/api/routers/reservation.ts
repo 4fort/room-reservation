@@ -36,6 +36,17 @@ export const reservationRouter = createTRPCRouter({
 
       if (!payment) return { success: false };
 
+      await ctx.db.roomAvailability.update({
+        where: {
+          room_id: input.room_id,
+        },
+        data: {
+          available_count: {
+            decrement: 1,
+          },
+        },
+      });
+
       return { success: true };
     }),
 
