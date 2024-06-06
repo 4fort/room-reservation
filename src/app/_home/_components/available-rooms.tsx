@@ -51,10 +51,11 @@ export default async function AvailableRooms() {
             <Image
               src={
                 room.Images[0]
-                  ? `/${room.ID}/${room.Images[0]}`
+                  ? `/[${room.ID}]/${room.Images[0]}`
                   : "/Organic-modern-bedroom-House-and-Hold.jpg"
               }
               alt="Room thumbnail"
+              loading="lazy"
               width={800}
               height={900}
               className="h-56 w-full object-cover"

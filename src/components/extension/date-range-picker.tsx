@@ -522,6 +522,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                       ),
                     )
                   }
+                  disabled={(date) => date < new Date()}
                 />
               </div>
             </div>

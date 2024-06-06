@@ -54,6 +54,7 @@ export const authRouter = createTRPCRouter({
       if (!user) {
         return {
           success: false,
+          user,
         };
       }
 

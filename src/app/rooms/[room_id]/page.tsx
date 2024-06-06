@@ -70,8 +70,9 @@ export default async function RoomBooking({
     <main className="w-full">
       <div className="relative h-[500px] w-full">
         <Image
-          src="/Organic-modern-bedroom-House-and-Hold.jpg"
+          src={`/[${room.ID}]/${room.Images[0]}`}
           alt="Placeholder"
+          loading="lazy"
           width={1100}
           height={1000}
           className="h-full w-full object-cover"
@@ -155,24 +156,25 @@ export default async function RoomBooking({
             </ul>
           </div>
         </div>
-        <ImagesCard />
+        <ImagesCard id={Number(room?.ID)} images={room?.Images} />
       </div>
     </main>
   );
 }
 
-const ImagesCard = () => {
+const ImagesCard = ({ id, images }: { id: number; images: string[] }) => {
   return (
     <Carousel>
       <CarouselNext className="top-1/3 -translate-y-1/3" />
       <CarouselPrevious className="top-1/3 -translate-y-1/3" />
       <CarouselMainContainer className="h-60">
-        {ImagePlaceholders.map((_, index) => (
+        {images.map((image, index) => (
           <SliderMainItem key={index} className="bg-transparent">
             <div className="flex size-full items-center justify-center overflow-clip rounded-xl bg-background outline outline-1 outline-border">
               <Image
-                src={ImagePlaceholders[index]!}
-                alt="Placeholder"
+                src={`/[${id}]/${image}`}
+                loading="lazy"
+                alt={image}
                 width={1100}
                 height={1000}
                 className="h-full w-full object-cover"
@@ -182,14 +184,15 @@ const ImagesCard = () => {
         ))}
       </CarouselMainContainer>
       <CarouselThumbsContainer>
-        {ImagePlaceholders.map((_, index) => (
+        {images.map((image, index) => (
           <SliderThumbItem key={index} index={index} className="bg-transparent">
             <div className="flex size-full items-center justify-center overflow-clip rounded-xl bg-background outline outline-1 outline-border">
               <Image
-                src={ImagePlaceholders[index]!}
-                alt="Placeholder"
-                width={110}
-                height={100}
+                src={`/[${id}]/${image}`}
+                loading="lazy"
+                alt={image}
+                width={210}
+                height={200}
                 className="h-full w-full object-cover"
               />
             </div>
