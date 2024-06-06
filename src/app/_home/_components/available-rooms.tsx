@@ -30,7 +30,7 @@ const AmenityIcons = [
 ];
 
 export default async function AvailableRooms() {
-  const rooms = await api.rooms.getAll({ limit: 3 });
+  const rooms = await api.rooms.getAll({});
 
   return (
     <React.Fragment>
@@ -69,9 +69,6 @@ export default async function AvailableRooms() {
             </div>
           </div>
         ))}
-        <div className="col-span-3 flex justify-center">
-          <Link href="/rooms">View All Rooms</Link>
-        </div>
       </div>
     </React.Fragment>
   );

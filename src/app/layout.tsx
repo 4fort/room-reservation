@@ -1,6 +1,6 @@
 import "~/styles/globals.css";
 
-import { Navbar } from "~/app/_components/navbar";
+import Navbar from "~/app/_components/navbar";
 
 import { DM_Serif_Display } from "next/font/google";
 import { Inter } from "next/font/google";
@@ -35,7 +35,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        "min-h-screen bg-background font-sans antialiased",
+        "min-h-screen scroll-smooth bg-background font-sans antialiased",
         dm_serif_display.variable,
         inter.variable,
       )}
