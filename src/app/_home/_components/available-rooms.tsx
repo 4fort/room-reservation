@@ -4,7 +4,6 @@ import React from "react";
 import { Dumbbell, ParkingCircle, Tv2, Waves, Wifi } from "lucide-react";
 import { api } from "~/trpc/server";
 import Image from "next/image";
-import Link from "next/link";
 
 const AmenityIcons = [
   {

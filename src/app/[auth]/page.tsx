@@ -2,7 +2,6 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Register from "./_register/register";
 import Login from "./_login/login";
-import { redirect } from "next/navigation";
 
 export default function AuthPage({ params }: { params: { auth: string } }) {
   // if (params.auth !== "login" && params.auth !== "signup") {
