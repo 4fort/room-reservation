@@ -1,15 +1,13 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
-import { cookies } from "next/headers";
-import * as jose from "jose";
 import { api } from "~/trpc/server";
 
 export const reservationRouter = createTRPCRouter({
   bookReservation: publicProcedure
     .input(
       z.object({
-        start_date: z.coerce.date(),
-        end_date: z.coerce.date(),
+        start_date: z.date(),
+        end_date: z.date(),
         note: z.string().optional(),
         room_id: z.coerce.number(),
         user_id: z.coerce.number(),

@@ -30,8 +30,8 @@ export default async function Payment({
     const diffDays = Math.abs(eDate.getDate() - sDate.getDate());
 
     const body = {
-      start_date: new Date(formData.get("start_date") as string) || new Date(),
-      end_date: new Date(formData.get("end_date") as string) || new Date(),
+      start_date: sDate ?? new Date(),
+      end_date: eDate ?? new Date(),
       note: formData.get("note") as string | undefined,
       payment_method_id: Number(formData.get("payment_method_id")),
       room_id: Number(searchParams.room),
@@ -41,13 +41,15 @@ export default async function Payment({
         : (diffDays + 1) * Number(roomPrice!),
     };
 
+    console.log(body);
+
     const bookReservation = await api.reservation.bookReservation(body);
 
     if (bookReservation.success) {
       redirect("/reservations");
     }
 
-    console.log(body);
+    console.log(bookReservation);
   };
 
   return (

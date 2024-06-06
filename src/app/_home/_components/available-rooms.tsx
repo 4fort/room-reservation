@@ -1,7 +1,14 @@
 import { Button } from "~/components/ui/button";
 import React from "react";
 
-import { Dumbbell, ParkingCircle, Tv2, Waves, Wifi } from "lucide-react";
+import {
+  BedDouble,
+  Dumbbell,
+  ParkingCircle,
+  Tv2,
+  Waves,
+  Wifi,
+} from "lucide-react";
 import { api } from "~/trpc/server";
 import Image from "next/image";
 import { Router } from "next/router";
@@ -53,9 +60,15 @@ export default async function AvailableRooms() {
               className="h-56 w-full object-cover"
             />
             <div className="p-6">
-              <h3 className="text-xl font-bold tracking-tight">
-                {room.RoomNumber}
-              </h3>
+              <div className="mb-2 flex items-center justify-between">
+                <h3 className="text-2xl font-bold tracking-tight">
+                  Room {Number(room.RoomNumber)}
+                </h3>
+                <span className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                  <BedDouble className="h-5 w-5" />{" "}
+                  {Number(room.AvailableCount)}
+                </span>
+              </div>
               <p className="mt-2 text-gray-500 dark:text-gray-400">
                 Sleeps {room.RoomCapacity} | {room.RoomType} | {room.Location}
               </p>
