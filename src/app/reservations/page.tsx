@@ -9,11 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { formatToLocalCurrency } from "~/lib/utils";
 
 export default async function Reservations() {
   const reservations = await api.reservation.getReservations();
-
-  console.log(reservations);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
@@ -44,7 +43,7 @@ export default async function Reservations() {
                 <TableCell>{reservation.EndingDate.toDateString()}</TableCell>
                 <TableCell>{reservation.ReservationNotes}</TableCell>
                 <TableCell className="text-right">
-                  {Number(reservation.AmountPaid)}
+                  {formatToLocalCurrency(Number(reservation.AmountPaid))}
                 </TableCell>
                 <TableCell>{reservation.PaymentMethod}</TableCell>
                 <TableCell>{reservation.Location}</TableCell>

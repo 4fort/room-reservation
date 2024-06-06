@@ -3,6 +3,7 @@
 import { Label } from "@radix-ui/react-dropdown-menu";
 import React, { useState } from "react";
 import { DateRangePicker } from "~/components/extension/date-range-picker";
+import { formatToLocalCurrency } from "~/lib/utils";
 
 interface DateRange {
   from: Date;
@@ -59,7 +60,9 @@ export default function DatePicker({ roomPrice }: { roomPrice: number }) {
 
       <div className="">
         <Label className="text-sm font-medium">Total</Label>
-        <p className="text-lg font-bold">₱{totalAmount}</p>
+        <p className="text-lg font-bold">
+          {formatToLocalCurrency(totalAmount)}
+        </p>
       </div>
     </>
   );

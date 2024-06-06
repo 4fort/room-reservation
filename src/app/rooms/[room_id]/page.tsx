@@ -24,6 +24,7 @@ import {
   SliderThumbItem,
 } from "~/components/extension/carousel";
 import BookRoom from "./components/book-room";
+import { formatToLocalCurrency } from "~/lib/utils";
 
 const ImagePlaceholders = [
   "/Organic-modern-bedroom-House-and-Hold.jpg",
@@ -83,7 +84,8 @@ export default async function RoomBooking({
             <div className="flex flex-col pe-8">
               <span className="font-bold text-primary">Price per night</span>
               <h6 className="flex items-center gap-2 text-muted-foreground">
-                <MoonStar className="h-5 w-5" />₱{Number(room?.Price)}
+                <MoonStar className="h-5 w-5" />
+                {formatToLocalCurrency(Number(room?.Price))}
               </h6>
             </div>
             <div className="px-8">
@@ -110,7 +112,7 @@ export default async function RoomBooking({
           </div>
         </div>
 
-        <div className="absolute inset-0 grid h-full grid-cols-2 items-center bg-gradient-to-tr from-black/80 to-transparent">
+        <div className="absolute inset-0 grid h-full grid-cols-2 items-center bg-gradient-to-br from-black/80 to-transparent">
           <div className="mx-auto w-full px-4 py-12 text-white/70 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
             <h1 className="text-8xl font-bold leading-tight tracking-tight">
               Room {room?.RoomNumber.toString()}

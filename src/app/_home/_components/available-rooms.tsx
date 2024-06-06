@@ -13,6 +13,7 @@ import { api } from "~/trpc/server";
 import Image from "next/image";
 import { Router } from "next/router";
 import BookNowButton from "./book-now-button";
+import { formatToLocalCurrency } from "~/lib/utils";
 
 const AmenityIcons = [
   {
@@ -80,8 +81,8 @@ export default async function AvailableRooms() {
                 )}
               </div>
               <div className="mt-4 flex items-center justify-between">
-                <p className="text-2xl font-bold">
-                  ₱{Number(room.Price)}/night
+                <p className="text-xl font-bold">
+                  {formatToLocalCurrency(Number(room.Price))}/night
                 </p>
                 <BookNowButton roomId={Number(room.ID)} />
               </div>
