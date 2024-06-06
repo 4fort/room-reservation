@@ -46,7 +46,7 @@ export default async function AvailableRooms() {
         {rooms?.map((room) => (
           <div
             key={room.ID}
-            className="overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800"
+            className="flex flex-col overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800"
           >
             <Image
               src={
@@ -59,7 +59,7 @@ export default async function AvailableRooms() {
               height={900}
               className="h-56 w-full object-cover"
             />
-            <div className="p-6">
+            <div className="flex flex-auto flex-col justify-between p-6">
               <div className="mb-2 flex items-center justify-between">
                 <h3 className="text-2xl font-bold tracking-tight">
                   Room {Number(room.RoomNumber)}
