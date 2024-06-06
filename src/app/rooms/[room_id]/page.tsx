@@ -12,8 +12,18 @@ import {
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
-import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/server";
+
+import {
+  Carousel,
+  CarouselMainContainer,
+  CarouselNext,
+  CarouselPrevious,
+  SliderMainItem,
+  CarouselThumbsContainer,
+  SliderThumbItem,
+} from "~/components/extension/carousel";
+import BookRoom from "./components/book-room";
 
 const ImagePlaceholders = [
   "/Organic-modern-bedroom-House-and-Hold.jpg",
@@ -90,9 +100,7 @@ export default async function RoomBooking({
               </h6>
             </div>
             <div className="ps-8">
-              <Button className="bg-primary p-3 text-primary-foreground hover:bg-primary/90">
-                Book now
-              </Button>
+              <BookRoom roomId={Number(room?.ID)} />
             </div>
           </div>
         </div>
@@ -148,16 +156,6 @@ export default async function RoomBooking({
     </main>
   );
 }
-
-import {
-  Carousel,
-  CarouselMainContainer,
-  CarouselNext,
-  CarouselPrevious,
-  SliderMainItem,
-  CarouselThumbsContainer,
-  SliderThumbItem,
-} from "~/components/extension/carousel";
 
 const ImagesCard = () => {
   return (

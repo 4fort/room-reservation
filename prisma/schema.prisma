@@ -33,7 +33,7 @@ model Payment {
   reservation_id    BigInt        @unique @db.UnsignedBigInt
   payment_method_id BigInt        @db.UnsignedBigInt
   amount            Decimal       @db.Decimal(10, 2)
-  payment_datetime  DateTime      @db.DateTime(0)
+  payment_datetime  DateTime?     @default(now())
   payment_methods   PaymentMethod @relation(fields: [payment_method_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "payment_payment_method_id_foreign")
   reservations      Reservation   @relation(fields: [reservation_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "payment_reservation_id_foreign")
 
@@ -55,7 +55,7 @@ model Reservation {
   user_id           BigInt   @db.UnsignedBigInt
   start_datetime    DateTime @db.DateTime(0)
   end_datetime      DateTime @db.DateTime(0)
-  reservation_notes String   @db.VarChar(255)
+  reservation_notes String?  @db.VarChar(255)
   room_id           BigInt   @db.UnsignedBigInt
   payment           Payment?
   rooms             Room     @relation(fields: [room_id], references: [id], onDelete: Cascade, map: "reservations_rooms_id_fk")

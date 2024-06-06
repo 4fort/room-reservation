@@ -4,6 +4,8 @@ import React from "react";
 import { Dumbbell, ParkingCircle, Tv2, Waves, Wifi } from "lucide-react";
 import { api } from "~/trpc/server";
 import Image from "next/image";
+import { Router } from "next/router";
+import BookNowButton from "./book-now-button";
 
 const AmenityIcons = [
   {
@@ -67,7 +69,7 @@ export default async function AvailableRooms() {
                 <p className="text-2xl font-bold">
                   ₱{Number(room.Price)}/night
                 </p>
-                <Button>Book Now</Button>
+                <BookNowButton roomId={Number(room.ID)} />
               </div>
             </div>
           </div>

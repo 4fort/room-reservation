@@ -86,8 +86,16 @@ export const roomsRouter = createTRPCRouter({
       available_count: rac.available_count + ra.available_count,
     }));
 
-    console.log(total);
-
     return total.available_count;
   }),
+  getRoomPrice: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const room = await ctx.db.room.findUnique({
+        where: {
+          id: Number(input),
+        },
+      });
+      return room?.price_per_night;
+    }),
 });

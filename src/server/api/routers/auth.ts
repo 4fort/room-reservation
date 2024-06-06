@@ -2,6 +2,7 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import * as jose from "jose";
+import { cookies } from "next/headers";
 
 export const authRouter = createTRPCRouter({
   signup: publicProcedure
@@ -101,4 +102,10 @@ export const authRouter = createTRPCRouter({
         token: jwt,
       };
     }),
+  getID: publicProcedure.query(async ({ ctx }) => {
+    const cookie = cookies();
+    const jwt = jose.decodeJwt(cookie.get("authorization")?.value ?? "");
+
+    return Number(jwt.sub);
+  }),
 });
