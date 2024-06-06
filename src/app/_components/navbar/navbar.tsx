@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { Actions } from "./actions";
 import { cookies } from "next/headers";
+import Links from "./links";
 
 export default function Navbar() {
   const cookie = cookies();
@@ -12,18 +13,7 @@ export default function Navbar() {
         <h1 className="ps-5 text-4xl text-primary">
           <Link href="/">JFJ</Link>
         </h1>
-        <ul className="flex flex-auto items-center justify-center gap-8 text-foreground/50 ">
-          <li>
-            <Link href="/about" className="hover:text-foreground/80">
-              About
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact" className="hover:text-foreground/80">
-              Contact
-            </Link>
-          </li>
-        </ul>
+        <Links />
       </nav>
       <div className="flex gap-4 pe-5">
         {!cookie.get("authorization") ? (

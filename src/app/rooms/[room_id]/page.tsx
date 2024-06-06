@@ -63,8 +63,9 @@ export default async function RoomBooking({
 }) {
   const room = await api.rooms.getSingleRoom(params.room_id);
 
+  const user: number = await api.auth.getID();
+
   if (!room) redirect("/");
-  console.log(room);
   return (
     <main className="w-full">
       <div className="relative h-[500px] w-full">
@@ -100,7 +101,10 @@ export default async function RoomBooking({
               </h6>
             </div>
             <div className="ps-8">
-              <BookRoom roomId={Number(room?.ID)} />
+              <BookRoom
+                roomId={Number(room?.ID)}
+                isAuthenticated={user > 0 ? true : false}
+              />
             </div>
           </div>
         </div>

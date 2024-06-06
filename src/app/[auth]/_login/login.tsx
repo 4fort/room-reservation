@@ -13,7 +13,11 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { api } from "~/trpc/server";
 
-export default function Login() {
+type LoginProps = {
+  callbackUrl?: string;
+};
+
+export default async function Login({ callbackUrl }: LoginProps) {
   const onSubmit = async (formData: FormData) => {
     "use server";
     const body = {
@@ -33,6 +37,10 @@ export default function Login() {
       sameSite: "strict",
       maxAge: Date.now() + 60 * 60 * 24 * 30,
     });
+
+    if (callbackUrl) {
+      redirect(callbackUrl);
+    }
 
     redirect("/");
   };

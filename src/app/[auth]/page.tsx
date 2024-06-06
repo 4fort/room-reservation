@@ -3,10 +3,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Register from "./_register/register";
 import Login from "./_login/login";
 
-export default function AuthPage({ params }: { params: { auth: string } }) {
-  // if (params.auth !== "login" && params.auth !== "signup") {
-  //   redirect("/");
-  // }
+export default function AuthPage({
+  params,
+  searchParams,
+}: {
+  params: { auth: string };
+  searchParams: { callbackUrl?: string };
+}) {
+  console.log(searchParams);
 
   return (
     <main>
@@ -17,7 +21,7 @@ export default function AuthPage({ params }: { params: { auth: string } }) {
             <TabsTrigger value="signup">Register</TabsTrigger>
           </TabsList>
           <TabsContent value="login">
-            <Login />
+            <Login callbackUrl={searchParams.callbackUrl} />
           </TabsContent>
           <TabsContent value="signup">
             <Register />
