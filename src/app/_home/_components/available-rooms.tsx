@@ -40,7 +40,11 @@ export default async function AvailableRooms() {
             className="overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800"
           >
             <Image
-              src={`/${room.ID}/${room.Images[0]}`}
+              src={
+                room.Images[0]
+                  ? `/${room.ID}/${room.Images[0]}`
+                  : "/Organic-modern-bedroom-House-and-Hold.jpg"
+              }
               alt="Room thumbnail"
               width={800}
               height={900}
