@@ -76,6 +76,9 @@ export const roomsRouter = createTRPCRouter({
         Images: room.images.map((i) => i.image_url) ?? "",
       };
     }),
+  getAllRoomCount: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.room.count();
+  }),
   getAvailableRoomCount: publicProcedure.query(async ({ ctx }) => {
     const roomTotal = await ctx.db.roomAvailability.findMany({
       select: {

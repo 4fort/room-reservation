@@ -88,4 +88,7 @@ export const reservationRouter = createTRPCRouter({
         .join(", "),
     }));
   }),
+  getNumberOfReservations: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.reservation.count();
+  }),
 });

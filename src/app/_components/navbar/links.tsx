@@ -9,6 +9,8 @@ export default function Links() {
   const segment = useSelectedLayoutSegment();
   console.log(segment);
 
+  if (segment === "dashboard") return null;
+
   return (
     <ul
       className={cn(
