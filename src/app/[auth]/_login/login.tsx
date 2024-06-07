@@ -55,11 +55,11 @@ export default async function Login({ callbackUrl }: LoginProps) {
           <div className="flex flex-col">
             <div className="">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="text" />
+              <Input id="email" name="email" type="text" required />
             </div>
             <div className="">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" />
+              <Input id="password" name="password" type="password" required />
             </div>
           </div>
         </CardContent>

@@ -7,12 +7,15 @@ import { cn } from "~/lib/utils";
 
 export default function Links() {
   const segment = useSelectedLayoutSegment();
+  console.log(segment);
 
   return (
     <ul
       className={cn(
         "flex flex-auto items-center justify-center gap-8",
-        segment ? "text-primary-foreground/70" : "text-foreground/50",
+        segment === "rooms"
+          ? "text-primary-foreground/80"
+          : "text-foreground/50",
       )}
     >
       <li>
@@ -27,7 +30,7 @@ export default function Links() {
           About
         </Link>
       </li>
-      <li>
+      {/* <li>
         <Link
           href="/contact"
           className={cn(
@@ -38,7 +41,7 @@ export default function Links() {
         >
           Contact
         </Link>
-      </li>
+      </li> */}
     </ul>
   );
 }

@@ -50,15 +50,15 @@ export default function Register() {
             </legend>
             <div className="">
               <Label htmlFor="first_name">First Name</Label>
-              <Input id="first_name" name="first_name" type="text" />
+              <Input id="first_name" name="first_name" type="text" required />
             </div>
             <div className="">
               <Label htmlFor="middle_name">Middle Name</Label>
-              <Input id="middle_name" name="middle_name" type="text" />
+              <Input id="middle_name" name="middle_name" type="text" required />
             </div>
             <div className="">
               <Label htmlFor="last_name">Last Name</Label>
-              <Input id="last_name" name="last_name" type="text" />
+              <Input id="last_name" name="last_name" type="text" required />
             </div>
           </fieldset>
           <fieldset className="grid grid-cols-3 gap-4 border p-4">
@@ -67,26 +67,36 @@ export default function Register() {
             </legend>
             <div className="">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" />
+              <Input id="email" name="email" type="email" required />
             </div>
             <div className="">
               <Label htmlFor="middle_name">Phone number</Label>
-              <Input id="phone" name="phone" type="text" />
+              <Input id="phone" name="phone" type="text" required />
             </div>
           </fieldset>
           <fieldset className="grid grid-cols-3 gap-4 border p-4">
             <legend className="-ml-1 px-1 text-sm font-medium">Other</legend>
             <div className="">
               <Label htmlFor="username">Username</Label>
-              <Input id="username" name="username" type="text" />
+              <Input id="username" name="username" type="text" required />
             </div>
             <div className="">
               <Label htmlFor="password_1">Password</Label>
-              <Input id="password_1" name="password_1" type="password" />
+              <Input
+                id="password_1"
+                name="password_1"
+                type="password"
+                required
+              />
             </div>
             <div className="">
               <Label htmlFor="password_2">Confirm Password</Label>
-              <Input id="password_2" name="password_2" type="password" />
+              <Input
+                id="password_2"
+                name="password_2"
+                type="password"
+                required
+              />
               <span className="sr-only" id="password_confirm"></span>
             </div>
           </fieldset>
