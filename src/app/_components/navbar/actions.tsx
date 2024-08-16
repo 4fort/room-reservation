@@ -41,7 +41,7 @@ export function Actions() {
         <DropdownMenuItem onClick={() => router.push("/reservations")}>
           Reservations
         </DropdownMenuItem>
-        <DropdownMenuItem>Profile</DropdownMenuItem>
+        {/* <DropdownMenuItem>Profile</DropdownMenuItem> */}
         <DropdownMenuSeparator />
         <LogoutButton />
       </DropdownMenuContent>

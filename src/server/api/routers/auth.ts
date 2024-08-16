@@ -119,10 +119,11 @@ export const authRouter = createTRPCRouter({
 
       return {
         success: true,
+        role: user.role,
         token: jwt,
       };
     }),
-  getID: publicProcedure.query(async ({ ctx }) => {
+  getID: publicProcedure.query(async () => {
     const cookie = cookies().get("authorization")?.value;
 
     if (!cookie) return 0;
