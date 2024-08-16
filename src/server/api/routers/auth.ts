@@ -40,11 +40,23 @@ export const authRouter = createTRPCRouter({
           .nullish(),
         passwordForm: z
           .object({
-            password: z.string(),
-            password_confirm: z.string(),
+            password: z
+              .string()
+              .min(8, {
+                message: "Password must be at least 8 characters long",
+              })
+              .max(100, { message: "Password cannot exceed 100 characters" })
+              .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/, {
+                message:
+                  "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+              }),
+            password_confirm: z.string().min(1, {
+              message: "Please confirm your password",
+            }),
           })
           .refine((data) => data.password === data.password_confirm, {
             message: "Passwords do not match",
+            path: ["password", "password_confirm"],
           }),
       }),
     )

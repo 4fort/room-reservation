@@ -10,10 +10,13 @@ export const onSubmit = async (formData: FormData) => {
     username: formData.get("username") as string,
     phone: formData.get("phone") as string,
     passwordForm: {
-      password: formData.get("password_1") as string,
-      password_confirm: formData.get("password_2") as string,
+      password: formData.get("passwordForm.password") as string,
+      password_confirm: formData.get("passwordForm.password_confirm") as string,
     },
   };
+
+  console.log(formData);
+
   console.log(body);
 
   return await api.auth.signup(body);

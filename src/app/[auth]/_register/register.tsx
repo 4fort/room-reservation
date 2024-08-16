@@ -67,12 +67,12 @@ const FORM_FIELDS = [
         type: "text",
       },
       {
-        name: "password_1",
+        name: "password",
         label: "Password",
         type: "password",
       },
       {
-        name: "password_2",
+        name: "password_confirm",
         label: "Confirm Password",
         type: "password",
       },
@@ -105,7 +105,7 @@ export default function Register() {
       if (res.success) {
         const loginForm = new FormData();
         loginForm.append("email", form.get("email") as string);
-        loginForm.append("password", form.get("password_1") as string);
+        loginForm.append("password", form.get("password") as string);
 
         const loginRes = await onSubmitLogin(loginForm);
 
