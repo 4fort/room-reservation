@@ -3,21 +3,21 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Amenity {
-  id             BigInt        @id @default(autoincrement()) @db.UnsignedBigInt
-  amenity_name   String        @db.VarChar(255)
-  description    String        @db.Text
-  room_amenities RoomAmenity[]
+  id            BigInt        @id @default(autoincrement()) @db.BigInt
+  amenity_name  String        @db.VarChar(255)
+  description   String        @db.Text
+  roomAmenities RoomAmenity[]
 
   @@map("amenities")
 }
 
 model Location {
-  id            BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  id            BigInt @id @default(autoincrement()) @db.BigInt
   location_name String @db.VarChar(255)
   address       String @db.VarChar(255)
   city          String @db.VarChar(255)
@@ -29,13 +29,13 @@ model Location {
 }
 
 model Payment {
-  id                BigInt        @id @default(autoincrement()) @db.UnsignedBigInt
-  reservation_id    BigInt        @unique @db.UnsignedBigInt
-  payment_method_id BigInt        @db.UnsignedBigInt
+  id                BigInt        @id @default(autoincrement()) @db.BigInt
+  reservation_id    BigInt        @unique @db.BigInt
+  payment_method_id BigInt        @db.BigInt
   amount            Decimal       @db.Decimal(10, 2)
-  payment_datetime  DateTime?     @default(now())
-  payment_methods   PaymentMethod @relation(fields: [payment_method_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "payment_payment_method_id_foreign")
-  reservations      Reservation   @relation(fields: [reservation_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "payment_reservation_id_foreign")
+  payment_datetime  DateTime?     @default(now()) @db.Timestamp(0)
+  paymentMethod     PaymentMethod @relation(fields: [payment_method_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "payment_payment_method_id_foreign")
+  reservation       Reservation   @relation(fields: [reservation_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "payment_reservation_id_foreign")
 
   @@index([payment_method_id], map: "payment_payment_method_id_index")
   @@index([reservation_id], map: "payment_reservation_id_index")
@@ -43,48 +43,48 @@ model Payment {
 }
 
 model PaymentMethod {
-  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  id          BigInt    @id @default(autoincrement()) @db.BigInt
   method_name String    @db.VarChar(255)
-  payment     Payment[]
+  payments    Payment[]
 
   @@map("payment_methods")
 }
 
 model Reservation {
-  id                BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
-  user_id           BigInt   @db.UnsignedBigInt
-  start_datetime    DateTime @db.DateTime(0)
-  end_datetime      DateTime @db.DateTime(0)
+  id                BigInt   @id @default(autoincrement()) @db.BigInt
+  user_id           BigInt   @db.BigInt
+  start_datetime    DateTime @db.Timestamp(0)
+  end_datetime      DateTime @db.Timestamp(0)
   reservation_notes String?  @db.VarChar(255)
-  room_id           BigInt   @db.UnsignedBigInt
+  room_id           BigInt   @db.BigInt
   payment           Payment?
-  rooms             Room     @relation(fields: [room_id], references: [id], onDelete: Cascade, map: "reservations_rooms_id_fk")
-  users             User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "reservations_user_id_foreign")
+  room              Room     @relation(fields: [room_id], references: [id], onDelete: Cascade, map: "reservations_room_id_fk")
+  user              User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "reservations_user_id_foreign")
   reviews           Review[]
 
-  @@index([room_id], map: "reservations_rooms_id_fk")
+  @@index([room_id], map: "reservations_room_id_index")
   @@index([user_id], map: "reservations_user_id_index")
   @@map("reservations")
 }
 
 model Review {
-  id              BigInt      @id @default(autoincrement()) @db.UnsignedBigInt
-  reservation_id  BigInt      @db.UnsignedBigInt
+  id              BigInt      @id @default(autoincrement()) @db.BigInt
+  reservation_id  BigInt      @db.BigInt
   rating          Int         @db.SmallInt
   review_text     String      @db.Text
-  review_datetime DateTime    @db.DateTime(0)
-  reservations    Reservation @relation(fields: [reservation_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "reviews_reservation_id_foreign")
+  review_datetime DateTime    @db.Timestamp(0)
+  reservation     Reservation @relation(fields: [reservation_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "reviews_reservation_id_foreign")
 
   @@index([reservation_id], map: "reviews_reservation_id_index")
   @@map("reviews")
 }
 
 model RoomAmenity {
-  id         BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
-  room_id    BigInt  @db.UnsignedBigInt
-  amenity_id BigInt  @db.UnsignedBigInt
-  amenities  Amenity @relation(fields: [amenity_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_amenities_amenity_id_foreign")
-  rooms      Room    @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_amenities_room_id_foreign")
+  id         BigInt  @id @default(autoincrement()) @db.BigInt
+  room_id    BigInt  @db.BigInt
+  amenity_id BigInt  @db.BigInt
+  amenity    Amenity @relation(fields: [amenity_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_amenities_amenity_id_foreign")
+  room       Room    @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_amenities_room_id_foreign")
 
   @@index([amenity_id], map: "room_amenities_amenity_id_index")
   @@index([room_id], map: "room_amenities_room_id_index")
@@ -92,17 +92,17 @@ model RoomAmenity {
 }
 
 model RoomAvailability {
-  id              BigInt @id @default(autoincrement()) @db.UnsignedBigInt
-  room_id         BigInt @unique @db.UnsignedBigInt
+  id              BigInt @id @default(autoincrement()) @db.BigInt
+  room_id         BigInt @unique @db.BigInt
   available_count Int
-  rooms           Room   @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_availabity_room_id_foreign")
+  room            Room   @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_availability_room_id_foreign")
 
-  @@index([room_id], map: "room_availabity_room_id_index")
+  @@index([room_id], map: "room_availability_room_id_index")
   @@map("room_availability")
 }
 
 model RoomType {
-  id          BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  id          BigInt @id @default(autoincrement()) @db.BigInt
   type_name   String @db.VarChar(255)
   description String @db.Text
   rooms       Room[]
@@ -111,27 +111,27 @@ model RoomType {
 }
 
 model RoomImage {
-  id        BigInt @id @default(autoincrement()) @db.UnsignedBigInt
-  room_id   BigInt @db.UnsignedBigInt
+  id        BigInt @id @default(autoincrement()) @db.BigInt
+  room_id   BigInt @db.BigInt
   image_url String @db.VarChar(255)
-  rooms     Room   @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_images_room_id_foreign")
+  room      Room   @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "room_images_room_id_foreign")
 
   @@map("room_images")
 }
 
 model Room {
-  id                BigInt            @id @default(autoincrement()) @db.UnsignedBigInt
-  location_id       BigInt            @db.UnsignedBigInt
-  room_type_id      BigInt            @db.UnsignedBigInt
-  room_number       BigInt            @db.UnsignedBigInt
-  capacity          Int               @db.UnsignedInt
-  price_per_night   Decimal?          @db.Decimal(10, 2)
-  images            RoomImage[]
-  reservations      Reservation[]
-  room_amenities    RoomAmenity[]
-  room_availability RoomAvailability?
-  locations         Location          @relation(fields: [location_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "rooms_location_id_foreign")
-  room_types        RoomType          @relation(fields: [room_type_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "rooms_room_type_id_foreign")
+  id               BigInt            @id @default(autoincrement()) @db.BigInt
+  location_id      BigInt            @db.BigInt
+  room_type_id     BigInt            @db.BigInt
+  room_number      BigInt            @db.BigInt
+  capacity         Int               @db.Integer
+  price_per_night  Decimal?          @db.Decimal(10, 2)
+  images           RoomImage[]
+  reservations     Reservation[]
+  roomAmenities    RoomAmenity[]
+  roomAvailability RoomAvailability?
+  location         Location          @relation(fields: [location_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "rooms_location_id_foreign")
+  roomType         RoomType          @relation(fields: [room_type_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "rooms_room_type_id_foreign")
 
   @@index([location_id], map: "rooms_location_id_index")
   @@index([room_type_id], map: "rooms_room_type_id_index")
@@ -139,13 +139,13 @@ model Room {
 }
 
 model User {
-  id                BigInt        @id @default(autoincrement()) @db.UnsignedBigInt
+  id                BigInt        @id @default(autoincrement()) @db.BigInt
   email             String        @unique(map: "users_email_unique") @db.VarChar(255)
   phone             String?       @unique @db.VarChar(255)
   email_verified_at DateTime?     @db.Timestamp(0)
   password          String        @db.VarChar(255)
-  created_at        DateTime?     @default(now())
-  updated_at        DateTime?     @updatedAt
+  created_at        DateTime?     @default(now()) @db.Timestamp(0)
+  updated_at        DateTime?     @updatedAt @db.Timestamp(0)
   first_name        String        @db.VarChar(255)
   middle_name       String?       @db.VarChar(255)
   last_name         String        @db.VarChar(255)

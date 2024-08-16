@@ -1,7 +1,8 @@
-import { redirect } from "next/navigation";
-import React from "react";
+"use client";
+
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import SubmitButton from "~/app/_components/submit-button";
-import { Button } from "~/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,29 +12,118 @@ import {
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { api } from "~/trpc/server";
+import { onSubmit } from "./registerAction";
+import { onSubmit as onSubmitLogin } from "../_login/loginAction";
+
+type ErrorMessageType = {
+  validation: string;
+  code: string;
+  message: string;
+  path: string[];
+};
+
+const FORM_FIELDS = [
+  {
+    legend: "Personal Information",
+    fields: [
+      {
+        name: "first_name",
+        label: "First Name",
+        type: "text",
+      },
+      {
+        name: "middle_name",
+        label: "Middle Name",
+        type: "text",
+      },
+      {
+        name: "last_name",
+        label: "Last Name",
+        type: "text",
+      },
+    ],
+  },
+  {
+    legend: "Contact Information",
+    fields: [
+      {
+        name: "email",
+        label: "Email",
+        type: "email",
+      },
+      {
+        name: "phone",
+        label: "Phone",
+        type: "text",
+      },
+    ],
+  },
+  {
+    legend: "Other",
+    fields: [
+      {
+        name: "username",
+        label: "Username",
+        type: "text",
+      },
+      {
+        name: "password_1",
+        label: "Password",
+        type: "password",
+      },
+      {
+        name: "password_2",
+        label: "Confirm Password",
+        type: "password",
+      },
+    ],
+  },
+];
 
 export default function Register() {
-  const onSubmit = async (formData: FormData) => {
-    "use server";
-    const body = {
-      first_name: formData.get("first_name") as string,
-      middle_name: formData.get("middle_name") as string,
-      last_name: formData.get("last_name") as string,
-      email: formData.get("email") as string,
-      username: formData.get("username") as string,
-      phone: formData.get("phone") as string,
-      passwordForm: {
-        password: formData.get("password_1") as string,
-        password_confirm: formData.get("password_2") as string,
-      },
-    };
-    console.log(body);
+  const [errors, setErrors] = useState<Record<string, string> | null>(null);
+  const router = useRouter();
 
-    const res = await api.auth.signup(body);
+  const handleInputChange = (name: string) => {
+    if (errors && errors[name]) {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors[name];
+        return Object.keys(newErrors).length > 0 ? newErrors : null;
+      });
+    }
+  };
 
-    if (res.success) {
-      redirect("/login");
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+
+    try {
+      const res = await onSubmit(form);
+      console.log(res);
+
+      if (res.success) {
+        const loginForm = new FormData();
+        loginForm.append("email", form.get("email") as string);
+        loginForm.append("password", form.get("password_1") as string);
+
+        const loginRes = await onSubmitLogin(loginForm);
+
+        if (!loginRes.success) {
+          router.push("/login");
+        }
+        router.push("/");
+      }
+    } catch (error: any) {
+      console.log(error.message);
+      const errorObj = JSON.parse(error.message).reduce(
+        (acc: Record<string, string>, curr: ErrorMessageType) => {
+          acc[curr.path[0]!] = curr.message;
+          return acc;
+        },
+        {},
+      );
+      setErrors(errorObj);
     }
   };
 
@@ -42,54 +132,33 @@ export default function Register() {
       <CardHeader>
         <CardTitle>Register</CardTitle>
       </CardHeader>
-      <form action={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <CardContent className="grid gap-4">
-          <fieldset className="grid grid-cols-3 gap-4 border p-4">
-            <legend className="-ml-1 px-1 text-sm font-medium">
-              Personal Information
-            </legend>
-            <div className="">
-              <Label htmlFor="first_name">First Name</Label>
-              <Input id="first_name" name="first_name" type="text" />
-            </div>
-            <div className="">
-              <Label htmlFor="middle_name">Middle Name</Label>
-              <Input id="middle_name" name="middle_name" type="text" />
-            </div>
-            <div className="">
-              <Label htmlFor="last_name">Last Name</Label>
-              <Input id="last_name" name="last_name" type="text" />
-            </div>
-          </fieldset>
-          <fieldset className="grid grid-cols-3 gap-4 border p-4">
-            <legend className="-ml-1 px-1 text-sm font-medium">
-              Contact Information
-            </legend>
-            <div className="">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" />
-            </div>
-            <div className="">
-              <Label htmlFor="middle_name">Phone number</Label>
-              <Input id="phone" name="phone" type="text" />
-            </div>
-          </fieldset>
-          <fieldset className="grid grid-cols-3 gap-4 border p-4">
-            <legend className="-ml-1 px-1 text-sm font-medium">Other</legend>
-            <div className="">
-              <Label htmlFor="username">Username</Label>
-              <Input id="username" name="username" type="text" />
-            </div>
-            <div className="">
-              <Label htmlFor="password_1">Password</Label>
-              <Input id="password_1" name="password_1" type="password" />
-            </div>
-            <div className="">
-              <Label htmlFor="password_2">Confirm Password</Label>
-              <Input id="password_2" name="password_2" type="password" />
-              <span className="sr-only" id="password_confirm"></span>
-            </div>
-          </fieldset>
+          {FORM_FIELDS.map(({ legend, fields }) => (
+            <fieldset
+              className="grid grid-cols-3 gap-4 border p-4"
+              key={legend}
+            >
+              <legend className="-ml-1 px-1 text-sm font-medium">
+                {legend}
+              </legend>
+              {fields.map(({ name, label, type }) => (
+                <div key={name}>
+                  <Label htmlFor={name}>{label}</Label>
+                  <Input
+                    id={name}
+                    name={name}
+                    type={type}
+                    className={errors?.[name] ? "border-red-500" : ""}
+                    onChange={() => handleInputChange(name)}
+                  />
+                  {errors?.[name] && (
+                    <p className="text-red-500">{errors[name]}</p>
+                  )}
+                </div>
+              ))}
+            </fieldset>
+          ))}
         </CardContent>
         <CardFooter className="justify-end">
           <SubmitButton text="Register" />

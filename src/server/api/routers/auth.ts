@@ -8,22 +8,36 @@ export const authRouter = createTRPCRouter({
   signup: publicProcedure
     .input(
       z.object({
-        first_name: z.string({
-          required_error: "First name is required",
-        }),
+        first_name: z
+          .string({
+            required_error: "First name is required",
+          })
+          .min(1, { message: "First name cannot be empty" })
+          .max(32, { message: "First name is too long" }),
         middle_name: z.string().nullish(),
-        last_name: z.string({
-          required_error: "Last name is required",
-        }),
-        username: z.string({
-          required_error: "Username is required",
-        }),
+        last_name: z
+          .string({
+            required_error: "Last name is required",
+          })
+          .min(1, { message: "Last name cannot be empty" })
+          .max(32, { message: "Last name is too long" }),
+        username: z
+          .string({
+            required_error: "Username is required",
+          })
+          .min(3, { message: "Username must be at least 3 characters long" })
+          .max(32, { message: "Username cannot be longer than 32 characters" }),
         email: z
           .string({
             required_error: "Email is required",
           })
           .email(),
-        phone: z.string().nullish(),
+        phone: z
+          .string()
+          .regex(/^[0-9]{10,15}$/, {
+            message: "Phone number must be between 10 and 15 digits",
+          })
+          .nullish(),
         passwordForm: z
           .object({
             password: z.string(),
@@ -53,12 +67,17 @@ export const authRouter = createTRPCRouter({
 
       if (!user) {
         return {
+          credentials: null,
           success: false,
           user,
         };
       }
 
       return {
+        credentials: {
+          email: input.email,
+          password: input.passwordForm.password,
+        },
         success: true,
       };
     }),
