@@ -56,14 +56,14 @@ export const reservationRouter = createTRPCRouter({
         user_id: user_id,
       },
       include: {
-        rooms: {
+        room: {
           include: {
-            locations: true,
+            location: true,
           },
         },
         payment: {
           include: {
-            payment_methods: true,
+            paymentMethod: true,
           },
         },
       },
@@ -71,18 +71,18 @@ export const reservationRouter = createTRPCRouter({
 
     return reservations.map((reservation) => ({
       ID: reservation.id,
-      RoomNumber: reservation.rooms.room_number,
+      RoomNumber: reservation.room.room_number,
       StartingDate: reservation.start_datetime,
       EndingDate: reservation.end_datetime,
       ReservationNotes: reservation.reservation_notes,
       AmountPaid: reservation.payment?.amount,
-      PaymentMethod: reservation.payment?.payment_methods.method_name,
+      PaymentMethod: reservation.payment?.paymentMethod.method_name,
       Location: [
-        reservation.rooms.locations.location_name,
-        reservation.rooms.locations.address,
-        reservation.rooms.locations.city,
-        reservation.rooms.locations.state,
-        reservation.rooms.locations.country,
+        reservation.room.location.location_name,
+        reservation.room.location.address,
+        reservation.room.location.city,
+        reservation.room.location.state,
+        reservation.room.location.country,
       ]
         .filter(Boolean)
         .join(", "),
